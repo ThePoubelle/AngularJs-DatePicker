@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+  <head>
+    <script data-require="angular.js@*" data-semver="1.5.6" src="//code.angularjs.org/1.5.6/angular.js"></script>
+    <script data-require="ui-bootstrap@*" data-semver="2.0.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.0.0.min.js"></script>
+    <link data-require="bootstrap-css@*" data-semver="3.3.6" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="gm.datepickerMultiSelect.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+   <body ng-controller='AppCtrl as $ctrl'>
+    <div class='panel'><h3>Selection Type:</h3>
+      <div class='btn-group'>
+        <button class='btn btn-primary' ng-model='$ctrl.type' uib-btn-radio='"individual"'>Individual</button>
+        <button class='btn btn-primary' ng-model='$ctrl.type' uib-btn-radio='"range"'>Range</button>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td>
+          <div uib-datepicker
+               ng-model='$ctrl.activeDate'
+               multi-select='$ctrl.selectedDates'
+               select-range='{{$ctrl.type=="range"}}'
+               datepicker-options='$ctrl.options'></div>
+        </td>
+        <td style='width:50px'>
+        </td>
+        <td>
+          <div ng-if='$ctrl.type=="individual"'>
+            Selected Dates:
+            <div class='well well-sm'>
+              <div ng-repeat='d in $ctrl.selectedDates | orderBy'>
+                {{d | date : 'fullDate'}}
+                <button class='btn btn-xs btn-warning' style='margin:5px' ng-click='$ctrl.removeFromSelected(d)'>Remove</button>
+              </div>
+            </div>
+          </div>
+          <div ng-if='$ctrl.type=="range"' >
+            Selected Range: 
+            <div class='well well-sm'>
+              {{($ctrl.selectedDates | orderBy)[0] | date:"fullDate"}}
+              <span ng-if='$ctrl.selectedDates.length > 1'>
+                - {{($ctrl.selectedDates | orderBy : '-')[0] | date:"fullDate"}}
+              </span>
+          	</div>
+        	</div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' style='padding-top:20px'>
+          <button ng-if='!$ctrl.show2pickers' ng-click='$ctrl.show2pickers=true'>Show Second Datepicker</button>
+        </td>
+      </tr>
+      <tr ng-if='$ctrl.show2pickers'>
+        <td>
+          <div uib-datepicker
+               ng-model='$ctrl.activeDate2'
+               multi-select='$ctrl.selectedDates2'
+               select-range='{{$ctrl.type=="range"}}'
+               datepicker-options='$ctrl.options2'></div>
+        </td>
+        <td style='width:50px'>
+        </td>
+        <td>
+          <div ng-if='$ctrl.type=="individual"'>
+            Selected Dates:
+            <div class='well well-sm'>
+              <div ng-repeat='d in $ctrl.selectedDates2 | orderBy'>
+                {{d | date : 'fullDate'}}
+                <button class='btn btn-xs btn-warning' style='margin:5px' ng-click='$ctrl.removeFromSelected2(d)'>Remove</button>
+              </div>
+            </div>
+          </div>
+          <div ng-if='$ctrl.type=="range"' >
+            Selected Range: 
+            <div class='well well-sm'>
+              {{($ctrl.selectedDates | orderBy)[0] | date:"fullDate"}}
+              <span ng-if='$ctrl.selectedDates2.length > 1'>
+                - {{($ctrl.selectedDates | orderBy : '-')[0] | date:"fullDate"}}
+              </span>
+          	</div>
+        	</div>
+        </td>
+      </tr>
+    </table>
+  </body>
+
+</html>
